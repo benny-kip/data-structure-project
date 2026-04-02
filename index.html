@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenyan Bites · order place (KES)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f4e9dd;
+            background-image: linear-gradient(145deg, #f9efe4 0%, #ecdac8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 16px;
+        }
+
+        .order-app {
+            max-width: 1350px;
+            width: 100%;
+            background: #fffcf8;
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            box-shadow: 0 30px 60px -15px #8b644a80;
+            border: 1px solid #dfc5ab;
+            overflow: hidden;
+        }
+
+        /* Kenyan header — warm & inviting */
+        .brand-bar {
+            background: #1e3d33;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            border-bottom: 4px solid #c9a87c;
+        }
+
+        .brand h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand span {
+            background: #deb887;
+            color: #1e3d33;
+            padding: 0.3rem 1.3rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .order-tag {
+            background: #2d5544;
+            padding: 0.5rem 1.8rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #c9a87c;
+        }
+
+        /* main columns */
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .menu-panel {
+            flex: 2.3;
+            min-width: 400px;
+            background: #fefcf9;
+            padding: 2.2rem 2.2rem 1.8rem 2.2rem;
+            border-right: 1px solid #e2cfb8;
+        }
+
+        .cart-panel {
+            flex: 1.4;
+            min-width: 340px;
+            background: #faf4ec;
+            padding: 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Kenyan menu categories */
+        .menu-category {
+            margin-bottom: 2.8rem;
+        }
+
+        .menu-category h3 {
+            font-size: 1.7rem;
+            font-weight: 650;
+            color: #1a332b;
+            border-left: 8px solid #c49a6c;
+            padding-left: 18px;
+            margin-bottom: 25px;
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 24px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 18px 18px 18px;
+            box-shadow: 0 8px 16px #e2cfb880;
+            border: 1px solid #f0ddcd;
+            transition: transform 0.15s, border 0.15s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .menu-item:hover {
+            border-color: #b8864b;
+            background: #fffbf5;
+            transform: translateY(-4px);
+        }
+
+        .item-img {
+            font-size: 3.3rem;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #1e3d33;
+            margin-bottom: 6px;
+        }
+
+        .item-desc {
+            font-size: 0.85rem;
+            color: #75604d;
+            margin-bottom: 18px;
+            line-height: 1.4;
+        }
+
+        .price-add {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .item-price {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #9f6e42;
+        }
+
+        .item-price::after {
+            content: " KES";
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #766045;
+        }
+
+        .add-btn {
+            background: #dbb28b;
+            border: none;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            font-size: 2rem;
+            font-weight: 300;
+            color: #1e3d33;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #b47d4e;
+            line-height: 1;
+        }
+
+        .add-btn:hover {
+            background: #c68642;
+            color: white;
+        }
+
+        /* cart area */
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .cart-header h2 {
+            font-size: 2.2rem;
+            font-weight: 650;
+            color: #1e3d33;
+        }
+
+        .cart-count {
+            background: #c68642;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 400px;
+            padding-right: 6px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 15px 20px;
+            margin-bottom: 14px;
+            border: 1px solid #e7cfb5;
+            box-shadow: 0 3px 10px #e2cfb850;
+        }
+
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 2;
+        }
+
+        .cart-item-title {
+            font-weight: 700;
+            color: #1e3d33;
+            font-size: 1.1rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.95rem;
+            color: #8b6a48;
+            font-weight: 500;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-qty {
+            background: #eedac8;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-weight: 700;
+            color: #3f3a2e;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9f7b5a;
+            width: 34px;
+            height: 34px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-item:hover {
+            background: #f2dac8;
+            color: #b13e3e;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: #9f8b78;
+            padding: 45px 20px;
+            background: #fcf3e9;
+            border-radius: 70px;
+            border: 2px dashed #c9a87c;
+            font-size: 1.1rem;
+        }
+
+        /* totals in KES */
+        .totals {
+            margin-top: 25px;
+            border-top: 3px solid #e2c9b2;
+            padding-top: 22px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            padding: 8px 0;
+        }
+
+        .total-row.final {
+            font-weight: 800;
+            font-size: 1.9rem;
+            color: #1e3d33;
+            border-top: 2px solid #c9a87c;
+            margin-top: 15px;
+            padding-top: 18px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            flex: 1;
+            padding: 18px 12px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #c68642;
+            color: #1e3d33;
+            border: 1px solid #a56f3e;
+        }
+
+        .btn-primary:hover {
+            background: #d79b5e;
+        }
+
+        .btn-secondary {
+            background: #e2cfb8;
+            color: #2f4b3c;
+            border: 1px solid #b89c7d;
+        }
+
+        .btn-secondary:hover {
+            background: #d2bc9f;
+        }
+
+        /* order modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: white;
+            max-width: 450px;
+            width: 90%;
+            padding: 2.8rem 2rem;
+            border-radius: 3rem;
+            box-shadow: 0 30px 50px #3d2e1f40;
+            text-align: center;
+            border: 4px solid #c49a6c;
+        }
+
+        .modal-card h3 {
+            font-size: 2.5rem;
+            color: #1e3d33;
+            margin-bottom: 10px;
+        }
+
+        .modal-card p {
+            font-size: 1.3rem;
+            margin: 15px 0 20px;
+        }
+
+        .modal-close {
+            background: #1e3d33;
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="order-app">
+    <!-- Kenyan header (all English now) -->
+    <div class="brand-bar">
+        <div class="brand">
+            <h1>🍖 KENYA NICHE · <span>order place</span></h1>
+        </div>
+        <div class="order-tag">
+            <i>🔥</i> welcome · KES
+        </div>
+    </div>
+
+    <!-- columns -->
+    <div class="columns">
+        <!-- left menu (kenyan dishes) -->
+        <div class="menu-panel">
+            <div class="menu-category">
+                <h3>🔥 nyama choma / chicken</h3>
+                <div class="item-grid" id="grill-container"></div>
+            </div>
+            <div class="menu-category">
+                <h3>🍛 rice / stews / ugali</h3>
+                <div class="item-grid" id="stew-container"></div>
+            </div>
+            <div class="menu-category">
+                <h3>🧃 drinks & mandazi</h3>
+                <div class="item-grid" id="drinks-container"></div>
+            </div>
+            <p style="color:#a48d73; margin-top:5px;">⬇️ click item or + to add</p>
+        </div>
+
+        <!-- right cart (all English) -->
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h2>🍲 your order</h2>
+                <div class="cart-count" id="cart-count">0</div>
+            </div>
+
+            <div class="cart-items" id="cart-items-container">
+                <div class="empty-cart-message">🛒 basket empty · choose flavors</div>
+            </div>
+
+            <!-- TOTALS (English labels) -->
+            <div class="totals">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">KES 0</span>
+                </div>
+                <div class="total-row">
+                    <span>Delivery</span>
+                    <span>KES 120</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total</span>
+                    <span id="total-amount">KES 120</span>
+                </div>
+            </div>
+
+            <!-- action buttons (English) -->
+            <div class="action-buttons">
+                <button class="btn-primary" id="place-order-btn"><i>🍽️</i> place order</button>
+                <button class="btn-secondary" id="clear-cart-btn"><i>🗑️</i> clear</button>
+            </div>
+            <p style="font-size:0.8rem; color:#a48d73; margin-top:15px;">© kwetu · tasty kenyan bites</p>
+        </div>
+    </div>
+</div>
+
+<!-- order confirmation modal (English) -->
+<div class="modal-overlay" id="order-modal">
+    <div class="modal-card">
+        <h3>✨ thank you! ✨</h3>
+        <p>your order has been placed ✊🏾</p>
+        <div style="font-size:3.5rem;">🍗🧋</div>
+        <button class="modal-close" id="close-modal">ok, close</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- KENYAN MENU (authentic, KES) ----------
+        const menuItems = [
+            // grills / nyama
+            { id: 'kg1', name: 'kuku choma', desc: 'grilled chicken, kachumbari, ugali', price: 690, cat: 'grill', emoji: '🍗' },
+            { id: 'kg2', name: 'nyama choma (goat)', desc: 'roasted goat, spicy kachumbari', price: 990, cat: 'grill', emoji: '🐐' },
+            { id: 'kg3', name: 'pork ribs', desc: 'smoky, with sukuma', price: 870, cat: 'grill', emoji: '🥩' },
+            // stews / wali / ugali
+            { id: 'ks1', name: 'beef stew + rice', desc: 'pilau inspired, beans', price: 520, cat: 'stew', emoji: '🍛' },
+            { id: 'ks2', name: 'samaki wa kupaka', desc: 'coconut fish, rice', price: 720, cat: 'stew', emoji: '🐟' },
+            { id: 'ks3', name: 'githeri special', desc: 'maize, beans, potatoes', price: 320, cat: 'stew', emoji: '🥣' },
+            { id: 'ks4', name: 'matumbo (tumbo love)', desc: 'tender tripe, ugali', price: 450, cat: 'stew', emoji: '🍲' },
+            { id: 'ks5', name: 'ugali sukuma wiki', desc: 'with onion tomato', price: 250, cat: 'stew', emoji: '🥬' },
+            // drinks & snacks
+            { id: 'kd1', name: 'tropical juice', desc: 'passion / mango', price: 180, cat: 'drink', emoji: '🧃' },
+            { id: 'kd2', name: 'mandazi (2pcs)', desc: 'fresh mahamri', price: 90, cat: 'drink', emoji: '🥨' },
+            { id: 'kd3', name: 'soda (large)', desc: 'coke / fanta / krest', price: 120, cat: 'drink', emoji: '🥤' },
+            { id: 'kd4', name: 'chai tangawizi', desc: 'spiced ginger tea', price: 100, cat: 'drink', emoji: '🫚' },
+            { id: 'kd5', name: 'maziwa mala', desc: 'fermented milk', price: 130, cat: 'drink', emoji: '🥛' }
+        ];
+
+        // cart state
+        let cart = new Map();  // id -> {id, name, price, quantity, emoji}
+
+        // DOM elements
+        const grillDiv = document.getElementById('grill-container');
+        const stewDiv = document.getElementById('stew-container');
+        const drinksDiv = document.getElementById('drinks-container');
+        const cartContainer = document.getElementById('cart-items-container');
+        const cartCountSpan = document.getElementById('cart-count');
+        const subtotalSpan = document.getElementById('subtotal');
+        const totalSpan = document.getElementById('total-amount');
+        const placeOrderBtn = document.getElementById('place-order-btn');
+        const clearCartBtn = document.getElementById('clear-cart-btn');
+        const modal = document.getElementById('order-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        // ----- render menu -----
+        function renderMenu() {
+            grillDiv.innerHTML = '';
+            stewDiv.innerHTML = '';
+            drinksDiv.innerHTML = '';
+
+            menuItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-item';
+                card.dataset.id = item.id;
+
+                card.innerHTML = `
+                    <div class="item-img">${item.emoji}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-desc">${item.desc}</div>
+                    <div class="price-add">
+                        <span class="item-price">${item.price}</span>
+                        <span class="add-btn" data-id="${item.id}">+</span>
+                    </div>
+                `;
+
+                // click on whole card (except +) adds to cart
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('add-btn')) {
+                        addToCart(item.id);
+                    }
+                });
+
+                // specific add button
+                const addBtn = card.querySelector('.add-btn');
+                addBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToCart(item.id);
+                });
+
+                // append to correct category
+                if (item.cat === 'grill') grillDiv.appendChild(card);
+                else if (item.cat === 'stew') stewDiv.appendChild(card);
+                else if (item.cat === 'drink') drinksDiv.appendChild(card);
+            });
+        }
+
+        // ----- cart functions -----
+        function addToCart(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (!item) return;
+
+            if (cart.has(id)) {
+                const existing = cart.get(id);
+                existing.quantity += 1;
+                cart.set(id, existing);
+            } else {
+                cart.set(id, {
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1,
+                    emoji: item.emoji
+                });
+            }
+            updateCartDisplay();
+        }
+
+        function removeOne(id) {
+            if (!cart.has(id)) return;
+            const item = cart.get(id);
+            if (item.quantity > 1) {
+                item.quantity -= 1;
+                cart.set(id, item);
+            } else {
+                cart.delete(id);
+            }
+            updateCartDisplay();
+        }
+
+        function deleteCompletely(id) {
+            cart.delete(id);
+            updateCartDisplay();
+        }
+
+        function clearCart() {
+            cart.clear();
+            updateCartDisplay();
+        }
+
+        // update UI: cart list, counts, totals (KES)
+        function updateCartDisplay() {
+            // cart items list
+            if (cart.size === 0) {
+                cartContainer.innerHTML = `<div class="empty-cart-message">🛒 basket empty · choose flavors</div>`;
+            } else {
+                let html = '';
+                for (let [id, item] of cart.entries()) {
+                    html += `
+                        <div class="cart-item" data-id="${id}">
+                            <div class="cart-item-info">
+                                <span class="cart-item-title">${item.emoji} ${item.name}</span>
+                                <span class="cart-item-price">KES ${item.price}</span>
+                            </div>
+                            <div class="cart-item-actions">
+                                <span class="item-qty">${item.quantity}</span>
+                                <button class="remove-item" data-id="${id}" title="remove one">−</button>
+                                <button class="remove-item" data-id="${id}" data-delete="all" style="color:#a65623;" title="remove all">✕</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                cartContainer.innerHTML = html;
+
+                // attach remove events
+                cartContainer.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = btn.getAttribute('data-id');
+                        if (btn.hasAttribute('data-delete')) {
+                            deleteCompletely(id);
+                        } else {
+                            removeOne(id);
+                        }
+                    });
+                });
+            }
+
+            // calculate totals (KES)
+            let subtotal = 0;
+            let totalQty = 0;
+            for (let item of cart.values()) {
+                subtotal += item.price * item.quantity;
+                totalQty += item.quantity;
+            }
+
+            const delivery = 120;
+            const total = subtotal + delivery;
+
+            // update DOM
+            cartCountSpan.innerText = totalQty;
+            subtotalSpan.innerText = `KES ${subtotal}`;  // whole KES
+            totalSpan.innerText = `KES ${total}`;
+        }
+
+        // place order (show modal)
+        function placeOrder() {
+            if (cart.size === 0) {
+                alert('Your basket is empty! Please add some food.');
+                return;
+            }
+            modal.style.display = 'flex';
+        }
+
+        // close modal
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+
+        // clear cart with confirmation
+        clearCartBtn.addEventListener('click', () => {
+            if (cart.size > 0 && confirm('Clear your entire order?')) {
+                clearCart();
+            }
+        });
+
+        // place order button
+        placeOrderBtn.addEventListener('click', placeOrder);
+
+        // initial render
+        renderMenu();
+        updateCartDisplay();
+    })();
+</script>
+
+</body>
+</html>
